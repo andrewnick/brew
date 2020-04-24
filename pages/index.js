@@ -10,6 +10,14 @@ export const ALL_VENUES_QUERY = gql`
       Name
       ID
       Website
+      Venue_Beverages {
+        Beverage {
+          ABV
+          Details
+          ID
+          Name
+        }
+      }
     }
   }
 `;
@@ -26,6 +34,7 @@ const Home = () => {
   }
   if (loading) return <div>Loading</div>;
   const { Venue } = data;
+  console.log(Venue);
 
   return (
     <div className="container">
@@ -41,6 +50,21 @@ const Home = () => {
             <li key={venue.ID}>
               <h2>{venue.Name}</h2>
               <a href={venue.Website}> Visit Site</a>
+
+              <h3>On Tap</h3>
+              <ul>
+                {venue.Venue_Beverages.map((VB) => {
+                  const { Beverage } = VB;
+                  return (
+                    <li key={Beverage.ID}>
+                      <h4>{Beverage.Name}</h4>
+                      <p>{Beverage.Details}</p>
+                      <p>ABV: {Beverage.ABV}%</p>
+                    </li>
+                  );
+                })}
+              </ul>
+              <ul></ul>
             </li>
           ))}
         </ul>
